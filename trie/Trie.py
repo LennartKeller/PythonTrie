@@ -50,6 +50,18 @@ class Trie:
                 queue.extendleft(node.children.values())
         return counter
 
+    def __hash__(self):
+        h = 0
+        queue = deque((self.start_node.children.values()))
+        while len(queue) > 0:
+            node = queue.pop()
+            if node.word_end:
+                h += hash(node)
+            if node.children:
+                queue.extendleft(node.children.values())
+        return h
+
+
 
 
 
