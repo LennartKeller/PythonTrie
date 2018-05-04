@@ -29,7 +29,7 @@ class Trie:
                 if i == len(string) - 1:
                     current_node.word_end = True
 
-    def add_words(self, lst: list[str]):
+    def add_words(self, lst: list):
         """.
         Adds all words from a iterable into trie
         :param lst: The iterable containing the words as strings
@@ -38,12 +38,12 @@ class Trie:
         for i in lst:
             self.add_word(i)
 
-    def check_if_contains(self, string: str):
+    def check_if_contains(self, string: str)->bool:
         """
         Checks if the trie contains the given word.
-        These checks have a linear runtime (O(m)) where m is the length of the given word.
+        These checks have a linear runtime (O(m), where m is the length of the given word).
         :param string: word to check
-        :return: True if tries the word, otherwise False
+        :return: True if the trie contains the word, otherwise False
         """
         if self.case_lower:
             string = string.lower()
@@ -55,7 +55,7 @@ class Trie:
                 return False
         return current_node.word_end
 
-    def __len__(self):
+    def __len__(self)->int:
         """
         Uses breadth-first style algorithm.
         :return: Number of words in trie
@@ -70,7 +70,7 @@ class Trie:
                 queue.extendleft(node.children.values())
         return counter
 
-    def __hash__(self):
+    def __hash__(self)->int:
         h = 0
         queue = deque((self.start_node.children.values()))
         while len(queue) > 0:
