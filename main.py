@@ -6,7 +6,7 @@ import time
 with open('german_stopwords_full.txt', 'r', encoding='UTF-8') as f:
     stopwords = f.readlines()
     stopwords = [i.lower()[:-1] for i in stopwords]
-
+# stopwords = ['aber', 'der', 'die', 'das']
 with open('kritik.txt', 'r') as f:
     text = f.read()
     text = text.lower()
@@ -16,7 +16,7 @@ delimiter = re.compile('\W+')
 tokens = re.split(delimiter, text)
 
 trie = Trie()
-trie.load_strings(stopwords)
+trie.add_words(stopwords)
 test_trie = []
 time_start_trie = time.time()
 for i in tokens:
@@ -36,7 +36,8 @@ time_result_conv = time.time() - time_start_conv
 print(len(test_con))
 
 print(time_result_conv)
-
+print(len(trie))
+print(len(stopwords))
 
 
 

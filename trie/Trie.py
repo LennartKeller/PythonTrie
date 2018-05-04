@@ -1,4 +1,5 @@
 from .Node import Node
+from collections import deque
 
 
 class Trie:
@@ -7,7 +8,7 @@ class Trie:
         self.start_node = Node('')
         self.case_lower = case_lower
 
-    def _load_string(self, string):
+    def add_word(self, string):
         if self.case_lower:
             string = string.lower()
         current_node = self.start_node
@@ -23,9 +24,9 @@ class Trie:
                 if i == len(string) - 1:
                     current_node.word_end = True
 
-    def load_strings(self, lst: list):
+    def add_words(self, lst: list):
         for i in lst:
-            self._load_string(i)
+            self.add_word(i)
 
     def check_if_contains(self, string: str):
         if self.case_lower:
@@ -37,4 +38,21 @@ class Trie:
             else:
                 return False
         return current_node.word_end
+
+    def __len__(self):
+        return self.__count__()
+
+    def __count__(self):
+        counter = 0
+        queue = deque((self.start_node.children.values()))
+        while len(queue) > 0:
+            node = queue.pop()
+            if node.word_end:
+                counter += 1
+            if node.children:
+                queue.extendleft(node.children.values())
+        return counter
+
+
+
 
