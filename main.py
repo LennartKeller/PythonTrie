@@ -37,7 +37,11 @@ print(len(test_con))
 
 print(time_result_conv)
 print(len(trie))
-print(len(stopwords))
+print(len(set(stopwords)))
 
+trie1 = Trie()
+trie1.add_words(tokens)
+print(len(trie1))
+print(len(set(tokens)))
 
 

@@ -40,9 +40,6 @@ class Trie:
         return current_node.word_end
 
     def __len__(self):
-        return self.__count__()
-
-    def __count__(self):
         counter = 0
         queue = deque((self.start_node.children.values()))
         while len(queue) > 0:
@@ -52,6 +49,8 @@ class Trie:
             if node.children:
                 queue.extendleft(node.children.values())
         return counter
+
+
 
 
 
