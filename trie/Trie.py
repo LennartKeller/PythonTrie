@@ -30,7 +30,7 @@ class Trie:
                     current_node.word_end = True
 
     def add_words(self, lst: list):
-        """.
+        """
         Adds all words from a iterable into trie
         :param lst: The iterable containing the words as strings
         :return: None
@@ -62,7 +62,7 @@ class Trie:
         """
         counter = 0
         queue = deque((self.start_node.children.values()))
-        while len(queue) > 0:
+        while queue:
             node = queue.pop()
             if node.word_end:
                 counter += 1
@@ -73,7 +73,7 @@ class Trie:
     def __hash__(self)->int:
         h = 0
         queue = deque((self.start_node.children.values()))
-        while len(queue) > 0:
+        while queue:
             node = queue.pop()
             if node.word_end:
                 h += hash(node)
@@ -81,8 +81,32 @@ class Trie:
                 queue.extendleft(node.children.values())
         return h
 
+    def __contains__(self, item):
+        if isinstance(item, str):
+            return self.check_if_contains(item)
+        else:
+            raise TypeError('item has to by of type str')
+
     def __iter__(self):
-        pass
+        return self._iter_words()
+
+    def __eq__(self, other):
+        if isinstance(other, type(self)):
+            return hash(other) == hash(self)
+        else:
+            raise TypeError('other has to be of type Trie ')
+
+    def _iter_words(self):
+        for node in self.start_node.children.values():
+            yield from self._get_words_from_subtree(node)
+
+    def _get_words_from_subtree(self, start_node: Node, word=''):
+        word += start_node.value
+        if start_node.children.values():
+            for i in start_node.children.values():
+                yield from self._get_words_from_subtree(i, word)
+        if start_node.word_end:
+            yield word
 
 
 

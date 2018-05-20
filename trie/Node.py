@@ -13,6 +13,10 @@ class Node:
             self.value, str(self.children), str(self.word_end))
         return string
 
+    def __repr__(self):
+        string = self.value
+        return string
+
     def __hash__(self):
         end_bit = 0
         if self.word_end:
