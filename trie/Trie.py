@@ -77,7 +77,7 @@ class Trie:
                 node = node.children[char]
             else:
                 return []
-        return list(self._get_words_from_subtree(node, word=prefix[:-1])).sort()
+        return sorted(list(self._get_words_from_subtree(node, word=prefix[:-1])))
 
     def __len__(self)->int:
         """
