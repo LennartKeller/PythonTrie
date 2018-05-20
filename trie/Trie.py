@@ -55,6 +55,15 @@ class Trie:
                 return False
         return current_node.word_end
 
+    def wordlist(self):
+        """
+        Returns a list of all words in the Trie.
+        The inital order of the input is not preserved
+        Eqivalent to >>> wordlist = list(trie)
+        :return: list of all words in trie
+        """
+        return list(self._iter_words())
+
     def __len__(self)->int:
         """
         Uses breadth-first style algorithm.
@@ -94,7 +103,7 @@ class Trie:
         if isinstance(other, type(self)):
             return hash(other) == hash(self)
         else:
-            raise TypeError('other has to be of type Trie ')
+            raise TypeError('other has to be of type {}'.format(type(self)))
 
     def _iter_words(self):
         for node in self.start_node.children.values():
@@ -107,10 +116,3 @@ class Trie:
                 yield from self._get_words_from_subtree(i, word)
         if start_node.word_end:
             yield word
-
-
-
-
-
-
-

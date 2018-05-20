@@ -28,3 +28,19 @@ class TrieTest(unittest.TestCase):
                 trie2.add_word(i)
             self.assertEqual(len(trie1), len(trie2))
             self.assertEqual(hash(trie1), hash(trie2))
+
+    def test_list_empty(self):
+        trie = Trie()
+        trie.wordlist()
+        self.assertEqual(trie.wordlist(), [])
+
+    def test_list(self):
+        trie = Trie()
+        trie._iter_words(self.tokens)
+        trie_list = trie.wordlist()
+        trie_list.sort()
+
+        lst = self.tokens.copy()
+        lst.sort()
+
+        self.assertEqual(trie_list, lst)
