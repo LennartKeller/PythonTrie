@@ -64,6 +64,21 @@ class Trie:
         """
         return list(self._iter_words())
 
+    def words_py_prefix(self, prefix):
+        """
+        Finds all words with the given prefix
+        :param prefix:
+        :return: alphabetically sorted list of words or empty list
+        """
+        # find start node => last character of prefix
+        node = self.start_node
+        for char in prefix:
+            if char in node.children:
+                node = node.children[char]
+            else:
+                return []
+        return list(self._get_words_from_subtree(node, word=prefix[:-1])).sort()
+
     def __len__(self)->int:
         """
         Uses breadth-first style algorithm.
