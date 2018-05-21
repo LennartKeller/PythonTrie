@@ -47,3 +47,6 @@ trie1.add_words(tokens)
 print(len(trie1))
 print(len(set(tokens)))
 print(len(trie1.wordlist()))
+
+trie._alternative_delete_word('abermals')
+print(list(trie))

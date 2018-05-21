@@ -4,9 +4,9 @@ from collections import deque
 
 class Trie:
 
-    def __init__(self, case_lower=True):
+    def __init__(self, case_sensitive=False):
         self.start_node = Node('')
-        self.case_lower = case_lower
+        self.case_sensitive = case_sensitive
 
     def add_word(self, string):
         """
@@ -14,7 +14,7 @@ class Trie:
         :param string: The word to add
         :return: None
         """
-        if self.case_lower:
+        if not self.case_sensitive:
             string = string.lower()
         current_node = self.start_node
         for i in range(len(string)):
@@ -45,7 +45,7 @@ class Trie:
         :param string: word to check
         :return: True if the trie contains the word, otherwise False
         """
-        if self.case_lower:
+        if not self.case_sensitive:
             string = string.lower()
         current_node = self.start_node
         for i in string:
@@ -64,13 +64,16 @@ class Trie:
         """
         return list(self._iter_words())
 
-    def words_py_prefix(self, prefix):
+    def words_py_prefix(self, prefix: str):
         """
         Finds all words with the given prefix
         :param prefix:
         :return: alphabetically sorted list of words or empty list
         """
         # find start node => last character of prefix
+        if not self.case_sensitive:
+            prefix.lower()
+
         node = self.start_node
         for char in prefix:
             if char in node.children:
@@ -78,6 +81,48 @@ class Trie:
             else:
                 return []
         return sorted(list(self._get_words_from_subtree(node, word=prefix[:-1])))
+
+    def delete_word(self, word: str):
+        """
+        Checks if the given word is in trie and deletes it.
+        :param word: word to delete
+        :return: True, if word was deleted, else false
+        """
+
+        if not self.case_sensitive:
+            word.lower()
+
+        if word not in self:
+            return False
+
+        # very simple and ineffective way of deleting words
+        # because the erased nodes are still in memory
+        node = self.start_node
+        for char in word:
+            node = node.children[char]
+        node.word_end = False
+        return True
+
+    def delete_by_prefix(self, prefix: str):
+        """
+        Deletes all entries after the given prefix.
+        >>> trie.delete_by_prefix('')
+        deletes all all entries in the trie
+        :param prefix:
+        :return:
+        """
+        if not self.case_sensitive:
+            prefix.lower()
+
+        node = self.start_node
+        for char in prefix:
+            if char in node.children:
+                node = node.children[char]
+            else:
+                # return False
+                raise BaseException('Prefix not in trie')
+        node.children = {}
+        return True
 
     def __len__(self)->int:
         """
@@ -105,7 +150,7 @@ class Trie:
                 queue.extendleft(node.children.values())
         return h
 
-    def __contains__(self, item):
+    def __contains__(self, item: str):
         if isinstance(item, str):
             return self.check_if_contains(item)
         else:
@@ -131,3 +176,47 @@ class Trie:
                 yield from self._get_words_from_subtree(i, word)
         if start_node.word_end:
             yield word
+
+    def _alternative_delete_word(self, word):
+        """
+        TODO test this
+        Alternative delete function, which deletes the nodes.
+        :param word: word to delete
+        :return: True if successful, else False
+        """
+        if not self.case_sensitive:
+            word.lower()
+        if word not in self:
+            return False
+        node = self.start_node
+        visited = list()
+        visited.append(node)
+        last_branch = None
+        for char in word:
+            if len(node.children) >= 2:
+                last_branch = node
+            visited.append(node)
+            node = node.children[char]
+        visited.append(node)
+        if last_branch == node or node.children:
+            node.word_end = False
+            return True
+        for _ in range(len(visited)):
+            walk_back_node = visited.pop()
+            if walk_back_node == last_branch:
+                last_branch.children.pop(walk_back_node.value, None)
+                return True
+            else:
+                visited[-1].children.pop(walk_back_node.value, None)
+                del walk_back_node
+
+
+
+
+
+
+
+
+
+
+
