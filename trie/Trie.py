@@ -17,8 +17,7 @@ class Trie:
         if not self.case_sensitive:
             string = string.lower()
         current_node = self.start_node
-        for i, char in enumerate(string):  # maybe change to => for i, char in enumerate(string): ...
-
+        for i, char in enumerate(string):
             if char in current_node.children:
                 current_node = current_node.children[char]
                 if i == len(string) - 1:
@@ -58,7 +57,7 @@ class Trie:
                 return False
         return current_node.word_end
 
-    def wordlist(self):
+    def wordlist(self)->list:
         """
         Returns a SORTED list of all words in the Trie.
         Eqivalent to:
@@ -67,7 +66,7 @@ class Trie:
         """
         return sorted(list(self._iter_words()))
 
-    def words_py_prefix(self, prefix: str):
+    def words_py_prefix(self, prefix: str)->list:
         """
         Finds all words with the given prefix
         :param prefix:
@@ -85,7 +84,7 @@ class Trie:
                 return []
         return sorted(list(self._get_words_from_subtree(node, word=prefix[:-1])))
 
-    def delete_word(self, word: str):
+    def remove_word(self, word: str)->bool:
         """
         Checks if the given word is in trie and deletes it.
         :param word: word to delete
@@ -106,9 +105,9 @@ class Trie:
         node.word_end = False
         return True
 
-    def delete_by_prefix(self, prefix: str):
+    def remove_by_prefix(self, prefix: str)->bool:
         """
-        Deletes all entries after the given prefix.
+        Deletes all entries (the subtree) after the given prefix.
         >>> trie.delete_by_prefix('')
         deletes all all entries in the trie
         :param prefix:
@@ -124,6 +123,11 @@ class Trie:
             else:
                 # return False
                 raise BaseException('Prefix not in trie')
+
+        # cleanup
+        for n in node.children.values():
+            self._recursive_delete_nodes(n)
+
         node.children = {}
         return True
 
@@ -180,7 +184,12 @@ class Trie:
         if start_node.word_end:
             yield word
 
-    def _alternative_delete_word(self, word):
+    def _recursive_delete_nodes(self, start_node):
+        for node in start_node.children.values():
+            self._recursive_delete_nodes(node)
+        del start_node
+
+    def _alternative_remove_word(self, word)->bool:
         """
         TODO test this
         Alternative delete function, which deletes the nodes.
@@ -212,3 +221,14 @@ class Trie:
             else:
                 visited[-1].children.pop(walk_back_node.value, None)
                 del walk_back_node
+
+    def levenhstein_distance(self, word1: str, word2: str)->int:
+        """
+        TODO
+        Returns the levenshtein distance of two words in the trie
+        :param word1:
+        :param word2:
+        :return:
+        """
+
+        return 0
