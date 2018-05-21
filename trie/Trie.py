@@ -35,7 +35,10 @@ class Trie:
         :param lst: The iterable containing the words as strings
         :return: None
         """
+
         for i in lst:
+            if not self.case_sensitive:
+                i.lower()
             self.add_word(i)
 
     def check_if_contains(self, string: str)->bool:
@@ -199,7 +202,7 @@ class Trie:
             visited.append(node)
             node = node.children[char]
         visited.append(node)
-        if last_branch == node or node.children:
+        if node.children:
             node.word_end = False
             return True
         for _ in range(len(visited)):
