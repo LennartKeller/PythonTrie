@@ -60,13 +60,12 @@ class Trie:
 
     def wordlist(self):
         """
-        Returns a list of all words in the Trie.
-        The inital order of the input is not preserved
+        Returns a SORTED list of all words in the Trie.
         Eqivalent to:
-        >>> wordlist = list(trie)
+        >>> wordlist = sorted(list(trie))
         :return: list of all words in trie
         """
-        return list(self._iter_words())
+        return sorted(list(self._iter_words()))
 
     def words_py_prefix(self, prefix: str):
         """
