@@ -3,7 +3,6 @@ import re
 import time
 import sys
 
-
 with open('german_stopwords_full.txt', 'r', encoding='UTF-8') as f:
     stopwords = f.readlines()
     stopwords = [i.lower()[:-1] for i in stopwords]
@@ -33,7 +32,7 @@ print('###########################')
 test_con = []
 time_start_conv = time.time()
 for i in tokens:
-    if not  i in stopwords:
+    if i not in stopwords:
         test_con.append(i)
 time_result_conv = time.time() - time_start_conv
 print('Time:')

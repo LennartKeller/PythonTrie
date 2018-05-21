@@ -6,7 +6,7 @@ class Node:
         self.word_end = word_end
 
     def set_child(self, child):
-        self.children[child.value] = child  # update edges???
+        self.children[child.value] = child
 
     def __str__(self):
         string = "Node {} with children {} | word_end: {}".format(

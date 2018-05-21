@@ -36,7 +36,7 @@ class TrieTest(unittest.TestCase):
         self.assertEqual(trie.wordlist(), [])
 
     def test_list(self):
-        trie = Trie()
+        trie = Trie(case_sensitive=True)
         trie.add_words(self.tokens)
         trie_list = trie.wordlist()
         trie_list.sort()
@@ -44,21 +44,21 @@ class TrieTest(unittest.TestCase):
         lst = self.tokens.copy()
         lst.sort()
 
-        self.assertEqual(trie_list, lst)
+        self.assertEqual(trie_list, sorted(lst))
 
     def test_delete_word(self):
         trie = Trie()
-        trie.add_words("Hallo Welt Hello World".split())
+        trie.add_words("hallo welt hello world".split())
         trie1 = deepcopy(trie)
 
         trie_list = list(trie)
-        trie_list.remove("Hello")
-        trie.delete_word("Hello")
+        trie_list.remove("hello")
+        trie.delete_word("hello")
         self.assertEqual(sorted(list(trie)), sorted(trie_list))
 
         trie1_list = list(trie1)
-        trie1_list.remove("World")
-        trie1._alternative_delete_word("World")
+        trie1_list.remove("world")
+        trie1._alternative_delete_word("world")
         self.assertEqual(sorted(list(trie1)), sorted(trie1_list))
 
     def test_delete_by_prefix(self):

@@ -17,15 +17,15 @@ class Trie:
         if not self.case_sensitive:
             string = string.lower()
         current_node = self.start_node
-        for i in range(len(string)):
-            current_char = string[i]
-            if current_char in current_node.children:
-                current_node = current_node.children[current_char]
+        for i, char in enumerate(string):  # maybe change to => for i, char in enumerate(string): ...
+
+            if char in current_node.children:
+                current_node = current_node.children[char]
                 if i == len(string) - 1:
                     current_node.word_end = True
             else:
-                current_node.set_child(Node(current_char))
-                current_node = current_node.children[current_char]
+                current_node.set_child(Node(char))
+                current_node = current_node.children[char]
                 if i == len(string) - 1:
                     current_node.word_end = True
 
@@ -41,7 +41,7 @@ class Trie:
                 i.lower()
             self.add_word(i)
 
-    def check_if_contains(self, string: str)->bool:
+    def check_if_contains(self, string: str) -> bool:
         """
         Checks if the trie contains the given word.
         These checks have a linear runtime (O(m), where m is the length of the given word).
@@ -127,7 +127,7 @@ class Trie:
         node.children = {}
         return True
 
-    def __len__(self)->int:
+    def __len__(self) -> int:
         """
         Uses breadth-first style algorithm.
         :return: Number of words in trie
@@ -142,7 +142,7 @@ class Trie:
                 queue.extendleft(node.children.values())
         return counter
 
-    def __hash__(self)->int:
+    def __hash__(self) -> int:
         h = 0
         queue = deque((self.start_node.children.values()))
         while queue:
@@ -212,14 +212,3 @@ class Trie:
             else:
                 visited[-1].children.pop(walk_back_node.value, None)
                 del walk_back_node
-
-
-
-
-
-
-
-
-
-
-
