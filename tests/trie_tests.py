@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 from trie.Trie import Trie
 
 
@@ -44,3 +45,30 @@ class TrieTest(unittest.TestCase):
         lst.sort()
 
         self.assertEqual(trie_list, lst)
+
+    def test_delete_word(self):
+        trie = Trie()
+        trie.add_words("Hallo Welt Hello World")
+        trie1 = deepcopy(trie)
+
+        trie_list = list(trie)
+        trie_list.remove("hello")
+        trie.delete_word("hello")
+        self.assertEqual(list(trie), trie_list)
+
+        trie1_list = list(trie1)
+        trie1_list.remove("world")
+        trie1._alternative_delete_word("world")
+        self.assertEqual(list(trie1), trie1_list)
+
+    def test_delete_by_prefix(self):
+        trie = Trie()
+        trie.add_words("Hallo Welt Hello World")
+        trie_list = list(trie)
+        trie.delete_by_prefix("h")
+        trie_list.remove("hallo")
+        trie_list.remove("hello")
+        self.assertEqual(list(trie), trie_list)
+
+        trie.delete_by_prefix("")
+        self.assertEqual(list(trie), [])

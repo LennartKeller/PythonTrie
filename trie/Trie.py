@@ -59,7 +59,8 @@ class Trie:
         """
         Returns a list of all words in the Trie.
         The inital order of the input is not preserved
-        Eqivalent to >>> wordlist = list(trie)
+        Eqivalent to:
+        >>> wordlist = list(trie)
         :return: list of all words in trie
         """
         return list(self._iter_words())
